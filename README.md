@@ -4,3 +4,8 @@
 
 ``` 
 ddev start
+ddev npm install
+ddev npm run start
+ddev exec pip install -r ./pyBot/requirements.txt
+ddev exec python pyBot/pyBot.py
+```
