@@ -33,21 +33,15 @@ const client = new Client({
     ],
 });
 
-
-client.on('ready', () => {
-    console.log(`Bot ist eingeloggt als ${client.user.tag}`);
-});
-
-client.on('messageCreate', message => {
-    if (message.content === 'ping') {
-        message.reply('pong');
-    }
-});
-
-
 client.on('messageCreate', message => {
     if (message.content === '!Dienst') {
         const {ActionRowBuilder, ButtonBuilder, ButtonStyle} = require('discord.js');
+
+        if (message.author.id !== message.member.user.id) {
+            message.reply('Du darfst den Befehl nicht ausführen.');
+            return;
+        }
+
         const button1 = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
@@ -63,8 +57,8 @@ client.on('messageCreate', message => {
                     .setStyle(ButtonStyle.Danger),
             );
         const embed = new EmbedBuilder()
-            .setColor("Green")
-            .setDescription(`Dienst beginnen`)
+            .setColor("Red")
+            .setDescription(`gehe jetzt in den Dienst`)
 
         const embed2 = new EmbedBuilder()
             .setColor("Red")
@@ -72,23 +66,21 @@ client.on('messageCreate', message => {
 
         message.channel.send({embeds: [embed], components: [button1]});
 
-        const collector = message.channel.createMessageComponentCollector();
+        const collector = message.channel.createMessageComponentCollector({ filter: i => i.user.id === message.author.id });
 
         collector.on('collect', async i => {
             if (i.customId === 'button') {
                 if (i.component.label === 'Dienst beendet') {
                     await i.deferUpdate();
-                    await i.editReply({content: 'Dienst beendet.', components: []});
+                    await i.editReply({ content: 'Dienst beendet.', components: [] });
                     collector.stop();
                     i.message.delete();
                 } else {
-                    await i.deferUpdate();
-                    await i.editReply({content: 'Dienst gestartet.', embeds: [embed2], components: [button2]});
+                    await i.update({embeds: [embed2], components: [button2]});
                 }
             }
         });
     }
 });
-
 
 client.login('MTA5MjM4MTg1NzU5MDU1NDY4NQ.G3P2PQ.mV6owLWJcbtyzKiA3BEbC3FAKQ50a_RHIKV4G8');

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./jsBot/index.js"
+    "start": "node ./jsBot/index.js",
+    "test": "node ./jsBot/testbot.js"
   },
   "author": "",
   "license": "ISC",
