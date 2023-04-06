@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const {Client, ActionRowBuilder, ButtonBuilder, ButtonStyle, Events, GatewayIntentBits} = require('discord.js');
+const {Client, MessageActionRow, MessageButton, GatewayIntentBits} = require('discord.js');
 
 const client = new Client({
     intents: [
@@ -28,21 +28,15 @@ const client = new Client({
     ],
 });
 
-client.on(Events.InteractionCreate, async interaction => {
-    if (!interaction.isChatInputCommand()) return;
 
-    if (message.content === '>button') {
-        const row = new ActionRowBuilder()
-            .addComponents(
-                new ButtonBuilder()
-                    .setCustomId('primary')
-                    .setLabel('Click me!')
-                    .setStyle(ButtonStyle.Primary),
-            );
+client.on('ready', () => {
+    console.log(`Bot ist eingeloggt als ${client.user.tag}`);
+});
 
-        await interaction.reply({content: 'I think you should,', components: [row]});
+client.on('messageCreate', (message) => {
+    if (message.content.toLowerCase() === '#ping') { // Vergleicht den Inhalt der Nachricht (nicht case-sensitive) mit 'oing'
+        message.reply('Pong'); // Antwortet mit 'Pong' auf die Nachricht
     }
 });
 
-
-client.login('MTA5MjM5MzI4Mzk0NDE4OTk2Mg.GMkq6v.v9TrplVexqRlOfjdULDTJ7zAaVkx-scrmqLVSo');
+client.login('MTA5MjM4MTg1NzU5MDU1NDY4NQ.G3P2PQ.mV6owLWJcbtyzKiA3BEbC3FAKQ50a_RHIKV4G8');
